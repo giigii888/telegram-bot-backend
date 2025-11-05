@@ -1,8 +1,9 @@
-import cors from "cors";
 import express from "express";
+import cors from "cors";
 
 const app = express();
 
+// ✅ Allow requests from Lovable
 app.use(cors({
   origin: [
     "https://lovable.app",
@@ -15,3 +16,16 @@ app.use(cors({
 }));
 
 app.use(express.json());
+
+// ✅ Health check route (Lovable checks this)
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "ok" });
+});
+
+// ✅ Main route (for you to test manually)
+app.get("/", (req, res) => {
+  res.send("Backend running successfully!");
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`✅ Backend running on port ${PORT}`));
